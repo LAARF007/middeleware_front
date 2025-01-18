@@ -36,3 +36,9 @@ npx sv create
 # create a new project in my-app
 npx sv create my-app
 ```
+
+## Dependencies 
+
+* [Bootswatch](https://bootswatch.com)  
+* [Amazing Calendar librairy](https://github.com/vkurko/calendar?tab=readme-ov-file)
+* [Flowbite for some components](https://flowbite-svelte.com/docs/components/accordion)
