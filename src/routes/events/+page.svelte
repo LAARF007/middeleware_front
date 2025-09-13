@@ -91,7 +91,7 @@
             }
             list.push(e)
 
-            // Get resources linked to event
+            // Get agendas linked to event
             // really not optimized
             value.resourceIds.forEach((rId) => {
                 if(!eventsResources.get(rId)){

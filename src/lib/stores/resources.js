@@ -4,7 +4,7 @@ import axios from "axios";
 export const resources = writable([])
 export const resourcesError = writable("")
 
-const apiBaseUrl = "/config_api/resources"
+const apiBaseUrl = "/config_api/agendas"
 
 /*
 ***** DATA FORMAT EXAMPLE
@@ -22,7 +22,7 @@ export function getResources() {
             resources.set(res.data)
         })
         .catch((err) => {
-            console.log("An error has occurred while retrieving resources")
+            console.log("An error has occurred while retrieving agendas")
             console.log(err)
             if(err.response?.data?.message){
                 resourcesError.set(JSON.stringify(err.response.data.message))
