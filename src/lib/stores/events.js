@@ -10,7 +10,7 @@ const apiBaseUrl = "/timetable_api/events"
 ***** DATA FORMAT EXAMPLE
 * {
 *  "id": "62a2beca-26cf-45bf-aa82-4cf5b14922fd",
-*  "resourceIds": [
+*  "agendaIds": [
 *     "d5c60e7a-10cd-4aec-9ea5-96d071ba824b"
 *  ],
 *  "uid": "ADE60323032342d323032352d5543412d36303334342d302d32",

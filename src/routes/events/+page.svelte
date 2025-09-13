@@ -2,7 +2,7 @@
     import {events, eventsError, getEvents} from "$lib/stores/events.js";
     import {onMount} from "svelte";
     import {SvelteMap} from "svelte/reactivity";
-    import {getResource} from "$lib/stores/agendas.js";
+    import {getAgenda} from "$lib/stores/agendas.js";
     import Calendar from '@event-calendar/core';
     import DayGrid from '@event-calendar/day-grid';
 
@@ -15,8 +15,8 @@
         '#E7A2FD',
         '#DE9800',
     ]
-    let resourceColors = new SvelteMap()
-    let eventsResources = new SvelteMap()
+    let agendaColors = new SvelteMap()
+    let eventsAgendas = new SvelteMap()
     let plugins = [DayGrid];
     let options = {
         view: 'dayGridMonth',
@@ -45,12 +45,13 @@
     function getEventColors(event){
         let colors = []
         let color = ""
+
         event.resourceIds.forEach((r) => {
-            if(!resourceColors.get(r)){
+            if(!agendaColors.get(r)){
                 // pick new color
-                resourceColors.set(r, pickColorsFrom[resourceColors.size])
+                agendaColors.set(r, pickColorsFrom[agendaColors.size])
             }
-            colors.push(resourceColors.get(r))
+            colors.push(agendaColors.get(r))
         })
         if(colors.length > 1){
             let percent = 100 / colors.length
@@ -80,7 +81,7 @@
                 //editable: false,
                 //startEditable: false,
                 //durationEditable: false,
-                resourceIds: value.resourceIds, //todo see ??
+                resourceIds: value.agendaIds, //todo see ??
                 //display: 'auto',
                 //backgroundColor: '', // see also eventBackgroundColor
                 //textColor: '', // see also eventTextColor
@@ -93,11 +94,11 @@
 
             // Get agendas linked to event
             // really not optimized
-            value.resourceIds.forEach((rId) => {
-                if(!eventsResources.get(rId)){
-                    getResource(rId)
+            value.agendaIds.forEach((rId) => {
+                if(!eventsAgendas.get(rId)){
+                    getAgenda(rId)
                         .then((data) => {
-                            eventsResources.set(rId, data)
+                            eventsAgendas.set(rId, data)
                         })
                         .catch(()=>{})
                 }
@@ -116,10 +117,10 @@
     {/if}
 
     <div class="d-flex mb-4 justify-content-center">
-        {#each resourceColors as [r, c]}
+        {#each agendaColors as [r, c]}
             <div class="d-flex me-3">
                 <span class="p-3 me-2" style="{`background-color: ${c};`}"></span>
-                <span>{eventsResources.get(r) ? eventsResources.get(r).name : r}</span>
+                <span>{eventsAgendas.get(r) ? eventsAgendas.get(r).name : r}</span>
             </div>
         {/each}
     </div>
