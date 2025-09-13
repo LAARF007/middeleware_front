@@ -8,12 +8,10 @@ const apiBaseUrl = "/config_api/alerts"
 
 /*
 ***** DATA FORMAT EXAMPLE
-* Only one of 'all' or 'resourceId' is set
 * {
 *   "id": "3aad8a52-2777-40b9-a641-51ede4d55bdc",
 *   "email": "email@etu.uca.fr",
-*   "all": false,
-*   "resourceId": "6ce750e5-05b8-4c4c-8fee-d9e381dbf364"
+*   "agendaId": "6ce750e5-05b8-4c4c-8fee-d9e381dbf364"
 * }
 */
 
@@ -34,12 +32,11 @@ export function getAlerts() {
         })
 }
 
-export function postAlerts(email, all, resourceId) {
+export function postAlerts(email, agendaId) {
     alertsError.set("")
     return axios.post(`${apiBaseUrl}`,{
         email: email,
-        all: all,
-        resourceId: resourceId
+        agendaId: agendaId
     })
         .then((res) => {
             getAlerts()
@@ -57,12 +54,11 @@ export function postAlerts(email, all, resourceId) {
         })
 }
 
-export function putAlert(id, email, all, resourceId) {
+export function putAlert(id, email, agendaId) {
     alertsError.set("")
     return axios.put(`${apiBaseUrl}/${id}`,{
         email: email,
-        all: all,
-        resourceId: resourceId
+        agendaId: agendaId
     })
         .then((res) => {
             getAlerts()

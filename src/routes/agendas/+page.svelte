@@ -1,5 +1,5 @@
 <script>
-    import {resources, resourcesError, getResources, postResources, putResource, deleteResource} from "$lib/stores/resources.js";
+    import {agendas, agendasError, getAgendas, postAgendas, putAgenda, deleteAgenda} from "$lib/stores/agendas.js";
     import DeleteModal from "../../components/delete-modal.svelte"
     import {onMount} from "svelte";
     import {SvelteMap} from "svelte/reactivity";
@@ -12,12 +12,12 @@
 
 
     onMount(() => {
-        getResources()
+        getAgendas()
     })
 
-    function addResource() {
-        console.log(`Adding resource with name ${newUcaName} and ucaId ${newUcaId}`)
-        postResources(newUcaId, newUcaName)
+    function addAgenda() {
+        console.log(`Adding agenda with name ${newUcaName} and ucaId ${newUcaId}`)
+        postAgendas(newUcaId, newUcaName)
             .then(() => {
                 newUcaName = ""
                 newUcaId = ""
@@ -26,9 +26,9 @@
             })
     }
 
-    function deleteResourceById(id) {
-        console.log(`Deleting resource ${id}`)
-        deleteResource(id)
+    function deleteAgendaById(id) {
+        console.log(`Deleting agenda ${id}`)
+        deleteAgenda(id)
             .then(() => {
                 editable.set(id, false)
             })
@@ -36,9 +36,9 @@
             })
     }
 
-    function editResource(id, name, ucaId) {
-        console.log(`Editing resource ${id} with name ${name} and ucaId ${ucaId}`)
-        putResource(id, ucaId, name)
+    function editAgenda(id, name, ucaId) {
+        console.log(`Editing agenda ${id} with name ${name} and ucaId ${ucaId}`)
+        putAgenda(id, ucaId, name)
             .then(() => {
                 editable.set(id, false)
             })
@@ -48,10 +48,10 @@
 </script>
 
 <div class="d-flex flex-column">
-    <h1 class="text-center color-yellow mb-lg-5">Resources</h1>
+    <h1 class="text-center color-yellow mb-lg-5">Agendas</h1>
     <div class="d-flex flex-column mb-5">
-        <h5 class="text-center fw-semibold mb-2">Add a resource : </h5>
-        <form class="d-flex justify-content-center" onsubmit="{addResource}">
+        <h5 class="text-center fw-semibold mb-2">Add a agenda : </h5>
+        <form class="d-flex justify-content-center" onsubmit="{addAgenda}">
             <div class="d-flex me-4">
                 <label for="id" class="fs-5 align-self-center me-2">UCA ID</label>
                 <input id="id" class="form-control-sm" placeholder="56529" bind:value={newUcaId}/>
@@ -63,9 +63,9 @@
             <input class="btn btn-yellow" type="submit" value="Submit"/>
         </form>
     </div>
-    {#if $resourcesError}
+    {#if $agendasError}
         <div class="text-center text-danger form-text fs-5">
-            An error occurred : {$resourcesError}
+            An error occurred : {$agendasError}
         </div>
     {/if}
     <table class="table w-50 align-self-center">
@@ -78,33 +78,33 @@
         </tr>
         </thead>
         <tbody>
-        {#each $resources as resource}
+        {#each $agendas as agenda}
             <tr>
                 <td>
-                    {#if !editable.get(resource.id)}
-                        {resource.name}
+                    {#if !editable.get(agenda.id)}
+                        {agenda.name}
                     {:else}
-                        <input class="form-control-sm" bind:value={resource.name} />
+                        <input class="form-control-sm" bind:value={agenda.name} />
                     {/if}
                 </td>
                 <td>
-                    {#if !editable.get(resource.id)}
-                        {resource.ucaId}
+                    {#if !editable.get(agenda.id)}
+                        {agenda.ucaId}
                     {:else}
-                        <input class="form-control-sm" bind:value={resource.ucaId} />
+                        <input class="form-control-sm" bind:value={agenda.ucaId} />
                     {/if}
                 </td>
-                <td>{resource.id}</td>
+                <td>{agenda.id}</td>
                 <td class="justify-content-around">
-                    {#if !editable.get(resource.id)}
-                        <button class="bg-transparent border-0" onclick="{() => {editable.set(resource.id, true)}}">
+                    {#if !editable.get(agenda.id)}
+                        <button class="bg-transparent border-0" onclick="{() => {editable.set(agenda.id, true)}}">
                             <span class="fa fa-pen-to-square text-warning"></span>
                         </button>
-                        <button class="bg-transparent border-0" onclick={() => { deleteModal.show(resource.id, resource.name) }}>
+                        <button class="bg-transparent border-0" onclick={() => { deleteModal.show(agenda.id, agenda.name) }}>
                             <span class="fa fa-trash-can text-danger"></span>
                         </button>
                     {:else}
-                        <button class="bg-transparent border-0" onclick="{() => {editResource(resource.id, resource.name, resource.ucaId)}}">
+                        <button class="bg-transparent border-0" onclick="{() => {editAgenda(agenda.id, agenda.name, agenda.ucaId)}}">
                             <span class="fa fa-check" style="color: #0b6f33"></span>
                         </button>
                     {/if}
@@ -113,5 +113,5 @@
         {/each}
         </tbody>
     </table>
-    <DeleteModal bind:this={deleteModal} uniqueName="resources" deleteFunction="{deleteResourceById}" />
+    <DeleteModal bind:this={deleteModal} uniqueName="agendas" deleteFunction="{deleteAgendaById}" />
 </div>

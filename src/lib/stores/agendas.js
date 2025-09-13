@@ -1,8 +1,8 @@
 import {writable} from "svelte/store";
 import axios from "axios";
 
-export const resources = writable([])
-export const resourcesError = writable("")
+export const agendas = writable([])
+export const agendasError = writable("")
 
 const apiBaseUrl = "/config_api/agendas"
 
@@ -15,101 +15,101 @@ const apiBaseUrl = "/config_api/agendas"
 * }
 */
 
-export function getResources() {
-    resourcesError.set("")
+export function getAgendas() {
+    agendasError.set("")
     axios.get(`${apiBaseUrl}`)
         .then((res) => {
-            resources.set(res.data)
+            agendas.set(res.data)
         })
         .catch((err) => {
             console.log("An error has occurred while retrieving agendas")
             console.log(err)
             if(err.response?.data?.message){
-                resourcesError.set(JSON.stringify(err.response.data.message))
+                agendasError.set(JSON.stringify(err.response.data.message))
             } else {
-                resourcesError.set(JSON.stringify(err))
+                agendasError.set(JSON.stringify(err))
             }
         })
 }
 
-export function getResource(id) {
-    resourcesError.set("")
+export function getAgenda(id) {
+    agendasError.set("")
     return axios.get(`${apiBaseUrl}/${id}`)
         .then((res) => {
             return Promise.resolve(res.data)
         })
         .catch((err) => {
-            console.log("An error has occurred while retrieving resource")
+            console.log("An error has occurred while retrieving agenda")
             console.log(err)
             if(err.response?.data?.message){
-                resourcesError.set(JSON.stringify(err.response.data.message))
+                agendasError.set(JSON.stringify(err.response.data.message))
             } else {
-                resourcesError.set(JSON.stringify(err))
+                agendasError.set(JSON.stringify(err))
             }
             return Promise.reject(err)
         })
 }
 
-export function postResources(ucaId, name) {
-    resourcesError.set("")
+export function postAgendas(ucaId, name) {
+    agendasError.set("")
     let parsed = parseInt(ucaId)
     return axios.post(`${apiBaseUrl}`,{
         ucaId: isNaN(parsed) ? ucaId : parsed,
         name: name
     })
         .then((res) => {
-            getResources()
+            getAgendas()
             return Promise.resolve()
         })
         .catch((err) => {
-            console.log("An error as occurred while posting resource")
+            console.log("An error as occurred while posting agenda")
             console.log(err)
             if(err.response?.data?.message){
-                resourcesError.set(JSON.stringify(err.response.data.message))
+                agendasError.set(JSON.stringify(err.response.data.message))
             } else {
-                resourcesError.set(JSON.stringify(err))
+                agendasError.set(JSON.stringify(err))
             }
             return Promise.reject(err)
         })
 }
 
-export function putResource(id, ucaId, name) {
-    resourcesError.set("")
+export function putAgenda(id, ucaId, name) {
+    agendasError.set("")
     let parsed = parseInt(ucaId)
     return axios.put(`${apiBaseUrl}/${id}`,{
         ucaId: isNaN(parsed) ? ucaId : parsed,
         name: name
     })
         .then((res) => {
-            getResources()
+            getAgendas()
             return Promise.resolve()
         })
         .catch((err) => {
-            console.log("An error as occurred while putting resource")
+            console.log("An error as occurred while putting agenda")
             console.log(err)
             if(err.response?.data?.message){
-                resourcesError.set(JSON.stringify(err.response.data.message))
+                agendasError.set(JSON.stringify(err.response.data.message))
             } else {
-                resourcesError.set(JSON.stringify(err))
+                agendasError.set(JSON.stringify(err))
             }
             return Promise.reject(err)
         })
 }
 
-export function deleteResource(id) {
-    resourcesError.set("")
+export function deleteAgenda(id) {
+    agendasError.set("")
     return axios.delete(`${apiBaseUrl}/${id}`)
         .then((res) => {
-            getResources()
+            getAgendas()
             return Promise.resolve()
         })
         .catch((err) => {
-            console.log("An error as occurred while deleting resource")
+            console.log("An error as occurred while deleting agenda")
             console.log(err)
             if(err.response?.data?.message){
-                resourcesError.set(JSON.stringify(err.response.data.message))
+                agendasError.set(JSON.stringify(err.response.data.message))
             } else {
-                resourcesError.set(JSON.stringify(err))
+                agendasError.set(JSON.stringify(err))
             }
             return Promise.reject(err)
         })

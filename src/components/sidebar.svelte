@@ -5,7 +5,7 @@
 <nav class="navbar bg-secondary align-content-start" style="width: fit-content">
     <ul class="d-flex flex-column navbar-nav text-center">
         <li class="nav-item mb-4 clickable-item">
-            <a class="clickable-item" href="/resources">
+            <a class="clickable-item" href="/agendas">
                 <span class="h1 fas fa-calendar-plus"></span>
             </a>
         </li>

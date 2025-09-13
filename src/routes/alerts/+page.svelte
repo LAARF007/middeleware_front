@@ -3,13 +3,12 @@
     import DeleteModal from "../../components/delete-modal.svelte"
     import {onMount} from "svelte";
     import {SvelteMap} from "svelte/reactivity";
-    import {getResource} from "$lib/stores/resources.js";
+    import {getAgenda} from "$lib/stores/agendas.js";
 
     let newEmail = $state("")
-    let newAll = $state(false)
-    let newResourceId = $state("")
+    let newAgendaId = $state("")
     let editable = new SvelteMap()
-    let alertResource = new SvelteMap()
+    let alertAgenda = new SvelteMap()
 
     let deleteModal = $state();
 
@@ -19,10 +18,10 @@
 
     alerts.subscribe((value) => {
         value.forEach((a) => {
-            if(!a.all && !alertResource.get(a.resourceId)){
-                getResource(a.resourceId)
+            if(!alertAgenda.get(a.agendaId)){
+                getAgenda(a.agendaId)
                     .then((data) => {
-                        alertResource.set(a.resourceId, data)
+                        alertAgenda.set(a.agendaId, data)
                     })
                     .catch(()=>{})
             }
@@ -31,12 +30,11 @@
 
 
     function addAlert() {
-        console.log(`Adding alert with email ${newEmail}, all ${newAll} and resourceId ${newResourceId}`)
-        postAlerts(newEmail, newAll, newResourceId)
+        console.log(`Adding alert with email ${newEmail} and agendaId ${newAgendaId}`)
+        postAlerts(newEmail, newAgendaId)
             .then(() => {
                 newEmail = ""
-                newAll = false
-                newResourceId = ""
+                newAgendaId = ""
             })
             .catch(() => {
             })
@@ -52,9 +50,9 @@
             })
     }
 
-    function editAlert(id, email, all, resourceId) {
-        console.log(`Editing alert ${id} with email ${email}, all ${all} and resourceId ${resourceId}`)
-        putAlert(id, email, all, resourceId)
+    function editAlert(id, email, agendaId) {
+        console.log(`Editing alert ${id} with email ${email} and agendaId ${agendaId}`)
+        putAlert(id, email, agendaId)
             .then(() => {
                 editable.set(id, false)
             })
@@ -73,12 +71,8 @@
                 <input id="email" class="form-control-sm" placeholder="justine.bachelard@ext.uca.fr" bind:value={newEmail}/>
             </div>
             <div class="d-flex me-4">
-                <label for="resource" class="fs-5 align-self-center me-2">Resource ID</label>
-                <input disabled="{newAll}" id="resource" class="form-control-sm" placeholder="6ce750e5-05b8-4c4c-8fee-d9e381dbf364 " bind:value={newResourceId}/>
-            </div>
-            <div class="d-flex me-4">
-                <label for="all" class="fs-5 align-self-center me-2">All resources</label>
-                <input type="checkbox" id="all" class="form-control-sm" bind:checked={newAll}/>
+                <label for="agenda" class="fs-5 align-self-center me-2">Agenda ID</label>
+                <input id="agenda" class="form-control-sm" placeholder="6ce750e5-05b8-4c4c-8fee-d9e381dbf364 " bind:value={newAgendaId}/>
             </div>
             <input class="btn btn-yellow" type="submit" value="Submit"/>
         </form>
@@ -92,7 +86,7 @@
         <thead>
         <tr>
             <th class="color-yellow" scope="col">Email</th>
-            <th class="color-yellow" scope="col">Resource or all</th>
+            <th class="color-yellow" scope="col">Agenda</th>
             <th class="color-yellow" scope="col">ID</th>
             <th scope="col">Actions</th>
         </tr>
@@ -109,14 +103,10 @@
                 </td>
                 <td>
                     {#if !editable.get(alert.id)}
-                        {#if alert.all}
-                            All
-                            {:else}
-                            {alert.resourceId} <br/>
-                            {alertResource.get(alert.resourceId)?.name ? alertResource.get(alert.resourceId)?.name : "Pb while getting resource name"}
-                        {/if}
+                        {alert.agendaId} <br/>
+                        {alertAgenda.get(alert.agendaId)?.name ? alertAgenda.get(alert.agendaId)?.name : "Pb while getting agenda name"}
                     {:else}
-                        <input class="form-control-sm" bind:value={alert.resourceId} />
+                        <input class="form-control-sm" bind:value={alert.agendaId} />
                     {/if}
                 </td>
                 <td>{alert.id}</td>
@@ -129,7 +119,7 @@
                             <span class="fa fa-trash-can text-danger"></span>
                         </button>
                     {:else}
-                        <button class="bg-transparent border-0" onclick="{() => {editAlert(alert.id, alert.email, alert.all, alert.resourceId)}}">
+                        <button class="bg-transparent border-0" onclick="{() => {editAlert(alert.id, alert.email, alert.agendaId)}}">
                             <span class="fa fa-check" style="color: #0b6f33"></span>
                         </button>
                     {/if}

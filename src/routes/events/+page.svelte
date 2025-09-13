@@ -2,7 +2,7 @@
     import {events, eventsError, getEvents} from "$lib/stores/events.js";
     import {onMount} from "svelte";
     import {SvelteMap} from "svelte/reactivity";
-    import {getResource} from "$lib/stores/resources.js";
+    import {getResource} from "$lib/stores/agendas.js";
     import Calendar from '@event-calendar/core';
     import DayGrid from '@event-calendar/day-grid';
 
