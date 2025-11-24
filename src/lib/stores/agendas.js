@@ -53,7 +53,7 @@ export function getAgenda(id) {
 export function postAgendas(ucaId, name) {
     agendasError.set("")
     let parsed = parseInt(ucaId)
-    return axios.post(`${apiBaseUrl}`,{
+    return axios.post(`${apiBaseUrl}/agendas`,{
         ucaId: isNaN(parsed) ? ucaId : parsed,
         name: name
     })
